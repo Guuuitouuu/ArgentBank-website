@@ -99,17 +99,23 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /transactions:
+  /transactions/{compteId}:
     get:
       security:
         - Bearer: []
       tags:
         - Transaction
-      summary: Récupérer toutes les transactions du mois en cours
+      summary: Récupérer toutes les transactions du mois en cours sur le compte choisis
       description: Retourne la liste de toutes les transactions groupées par compte pour le mois en cours.
+      parameters:
+        - name: CompteId
+          in: path
+          description: ID du compte pour la transaction à récupérer
+          required: true
+          type: string
       responses:
         200:
-          description: Succès. Retourne la liste des transactions.
+          description: Succès. Retourne la liste des transactions pour le mois en cours sur le compte spécifiée.
         404:
           description: Aucune transaction trouvée pour le mois en cours.
         500:
@@ -131,10 +137,10 @@ paths:
           type: string
       responses:
         200:
-          description: Succès. Retourne les détails de la transaction.
+          description: Succès. Retourne les détails de la transaction spécifiée.
         404:
           description: Transaction non trouvée.
-          500:
+        500:
           description: Internal Server Error
 
     put:
@@ -158,28 +164,7 @@ paths:
             $ref: '#/definitions/TransactionInput'
       responses:
         200:
-          description: Succès. Retourne les détails de la transaction modifiée.
-        404:
-          description: Transaction non trouvée.
-        500:
-          description: Internal Server Error
-
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Transaction
-      summary: Supprimer une transaction
-      description: Supprime une transaction spécifiée par ID.
-      parameters:
-        - name: transactionId
-          in: path
-          description: ID de la transaction à supprimer
-          required: true
-          type: string
-      responses:
-        204:
-          description: Succès. La transaction a été supprimée.
+          description: Succès. Retourne les détails de la transaction modifiée (Note/Categorie).
         404:
           description: Transaction non trouvée.
         500:
@@ -189,15 +174,12 @@ definitions:
   TransactionInput:
     type: object
     properties:
-      amount:
-        type: number
+      Category:
+        type: string
         description: Montant de la transaction
-      description:
+      Note:
         type: string
         description: Description de la transaction
-      accountId:
-        type: string
-        description: ID du compte associé à la transaction
   User:
     properties:
       email:
