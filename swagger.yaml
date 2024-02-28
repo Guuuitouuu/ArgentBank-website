@@ -108,7 +108,7 @@ paths:
       summary: Récupérer toutes les transactions du mois en cours sur le compte choisis
       description: Retourne la liste de toutes les transactions groupées par compte pour le mois en cours.
       parameters:
-        - name: CompteId
+        - name: compteId
           in: path
           description: ID du compte pour la transaction à récupérer
           required: true
@@ -121,15 +121,20 @@ paths:
         500:
           description: Internal Server Error
 
-  /transactions/{transactionId}:
+  /transactions/{compteId}/{transactionId}:
     get:
       security:
         - Bearer: []
       tags:
         - Transaction
-      summary: Récupérer les détails d'une transaction spécifique
-      description: Retourne les détails d'une transaction spécifiée par ID.
+      summary: Récupérer les détails d'une transaction spécifiée d'un compte spécifié.
+      description: Retourne les détails d'une transaction spécifiée par ID pour un compte spécifié.
       parameters:
+        - name: compteId
+          in: path
+          description: ID du compte à récupérer
+          required: true
+          type: string
         - name: transactionId
           in: path
           description: ID de la transaction à récupérer
@@ -137,7 +142,7 @@ paths:
           type: string
       responses:
         200:
-          description: Succès. Retourne les détails de la transaction spécifiée.
+          description: Succès. Retourne les détails de la transaction spécifiée d'un compte spécifié.
         404:
           description: Transaction non trouvée.
         500:
@@ -148,17 +153,22 @@ paths:
         - Bearer: []
       tags:
         - Transaction
-      summary: Modifier les informations d'une transaction
-      description: Modifie les informations d'une transaction spécifiée par ID.
+      summary: Modifier les informations d'une transaction spécifiée d'un compte spécifié.
+      description: Modifie les informations d'une transaction spécifiée par ID d'un compte.
       parameters:
-        - name: transactionId
+        - name: compteId
           in: path
-          description: ID de la transaction à modifier
+          description: ID du compte à récupérer
           required: true
           type: string
-        - name: body
-          in: body
-          description: Nouvelles informations de la transaction
+        - name: transactionId
+          in: path
+          description: ID de la transaction à récupérer
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Change les informations liées a une transaction spécifié d'un compte spécifié
           required: true
           schema:
             $ref: '#/definitions/TransactionInput'
@@ -174,10 +184,10 @@ definitions:
   TransactionInput:
     type: object
     properties:
-      Category:
+      categorie:
         type: string
-        description: Montant de la transaction
-      Note:
+        description: Catégorie de la transaction
+      note:
         type: string
         description: Description de la transaction
   User:
