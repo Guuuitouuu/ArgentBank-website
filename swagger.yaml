@@ -207,12 +207,15 @@ definitions:
       amount:
         type: number
         description: Montant de la transaction
-      description:
+      transactionType:
         type: string
-        description: Description de la transaction
+        description: Type de la transaction
       category:
         type: string
         description: Catégorie de la transaction
+      note:
+        type: string
+        description: Note de la transaction
 
   TransactionList:
     type: object
