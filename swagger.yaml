@@ -116,6 +116,8 @@ paths:
       responses:
         200:
           description: Succès. Retourne la liste des transactions pour le mois en cours sur le compte spécifiée.
+          schema:
+            $ref: '#/definitions/TransactionList'
         404:
           description: Aucune transaction trouvée pour le mois en cours.
         500:
@@ -143,6 +145,8 @@ paths:
       responses:
         200:
           description: Succès. Retourne les détails de la transaction spécifiée d'un compte spécifié.
+          schema:
+            $ref: '#/definitions/TransactionDetails'
         404:
           description: Transaction non trouvée.
         500:
@@ -190,6 +194,36 @@ definitions:
       note:
         type: string
         description: Description de la transaction
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID de la transaction
+      date:
+        type: string
+        format: date-time
+        description: Date de la transaction
+      amount:
+        type: number
+        description: Montant de la transaction
+      description:
+        type: string
+        description: Description de la transaction
+      category:
+        type: string
+        description: Catégorie de la transaction
+
+  TransactionList:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/Transaction'
+
+  TransactionDetails:
+    $ref: '#/definitions/Transaction'
   User:
     properties:
       email:
